@@ -16,13 +16,13 @@ class Equation {
 	vector<Term> content;
 	public:
 		add(char sign, float num) {
-			content.pushback(Term(sign, num))
+			content.pushback(Term(sign, num));
 		}
 }
 
 int main()
 {
-	cout<<"Hello World";
+	cout << "Hello World";
 
 	return 0;
 }
