@@ -14,6 +14,7 @@ struct Term {
 
 class Equation {
 	vector<Term> content;
+	int iter = 0;
 	public:
 		add(char sign, float num) {
 			content.pushback(Term(sign, num));
