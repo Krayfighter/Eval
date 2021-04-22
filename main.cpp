@@ -5,8 +5,8 @@ using namespace std;
 
 struct Term {
 	char sign;
-	float num;
-	Term(char s, float n) {
+	double num;
+	Term(char s, double n) {
 		sign = s;
 		num = n;
 	}
@@ -16,14 +16,27 @@ class Equation {
 	vector<Term> content;
 	int iter = 0;
 	public:
-		add(char sign, float num) {
-			content.pushback(Term(sign, num));
+		Equation(vector<Term> ncontent = vector<Term>()) {content = ncontent;}
+		void add(char sign, double num) {content.push_back(Term(sign, num));}
+		void print() {
+			for(int i = 0; i < sizeof(content); i++) {
+				cout << content[i].sign << content[i].num << endl;
+			}
 		}
-}
+		Equation rtrunk() {
+			vector<Term> ncontent;
+			for(int i = 1; i < sizeof(content); i++) {ncontent.push_back(Term(content[i].sign, content[i].num));}
+			// return Equation
+		}
+};
 
-int main()
-{
-	cout << "Hello World";
+int main() {
 
-	return 0;
+	Equation equ;
+	equ.add('-', 3.0);
+	equ.add('*', 2.0);
+
+	equ = equ.rtrunk();
+	equ.print();
+
 }
