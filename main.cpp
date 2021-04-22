@@ -19,14 +19,14 @@ class Equation {
 		Equation(vector<Term> ncontent = vector<Term>()) {content = ncontent;}
 		void add(char sign, double num) {content.push_back(Term(sign, num));}
 		void print() {
-			for(int i = 0; i < sizeof(content); i++) {
+			for(int i = 0; i < content.size(); i++) {
 				cout << content[i].sign << content[i].num << endl;
 			}
 		}
 		Equation rtrunk() {
 			vector<Term> ncontent;
-			for(int i = 1; i < sizeof(content); i++) {ncontent.push_back(Term(content[i].sign, content[i].num));}
-			// return Equation
+			for(int i = 1; i < content.size(); i++) {ncontent.push_back(Term(content[i].sign, content[i].num));}
+			return Equation(ncontent = ncontent);
 		}
 };
 
