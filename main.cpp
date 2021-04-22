@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -37,6 +38,35 @@ class Equation {
 			return Equation(ncontent=ncontent);
 		}
 		vector<Term> *get_content() {return &content;};
+		void from_string(string nequ) {
+			vector<string> tmp;
+			int iter = 0;
+			int word = 0;
+			while 1 {
+				switch(nequ[iter]) {
+					case '+': {
+						word++;
+						tmp[word].append(nequ[iter]);
+					}break;
+					case '-': {
+						word++;
+						tmp[word].append(nequ[iter]);
+					}break;
+					case '*': {
+						word++;
+						tmp[word].append(nequ[iter]);
+					}break;
+					case '/': {
+						word++;
+						tmp[word].append(nequ[iter]);
+					}break;
+					default: {
+						tmp[word].append(nequ[iter]);
+					}break;
+				}
+				iter++;
+			}
+		}
 };
 
 double solve(Equation equ) {
