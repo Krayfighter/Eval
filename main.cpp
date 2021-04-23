@@ -44,52 +44,6 @@ class Equation {
 			return Equation(ncontent=ncontent);
 		}
 		vector<Term> *get_content() {return &content;};
-		// void from_string(string nequ) {
-		// 	vector<string> tmp;
-		// 	int word = 0;
-		// 	for(int iter = 0; iter < nequ.size(); ++iter) {
-		// 		switch(nequ[iter]) {
-		// 			case '+': {
-		// 				word++;
-		// 				tmp.push_back("");
-		// 				tmp[word] += nequ[iter];
-		// 			}break;
-		// 			case '-': {
-		// 				word++;
-		// 				tmp.push_back("");
-		// 				tmp[word] += nequ[iter];
-		// 			}break;
-		// 			case '*': {
-		// 				word++;
-		// 				tmp.push_back("");
-		// 				tmp[word] += nequ[iter];
-		// 			}break;
-		// 			case '/': {
-		// 				word++;
-		// 				tmp.push_back("");
-		// 				tmp[word] += nequ[iter];
-		// 			}break;
-		// 			default: {
-		// 				tmp[word] += nequ[iter];
-		// 			}break;
-		// 		}
-		// 	}
-		// 	init();
-		// 	char _sign;
-		// 	string _snum;
-		// 	int _num;
-		// 	for(string var : tmp) {
-
-		// 		_sign = var[0];
-		// 		for(int o = 1; o < var.size(); o++) {_snum += var[o];}
-		// 		_num = stod(_snum);
-		// 		add(_sign, _num);
-
-		// 		_sign = char();
-		// 		_snum = "";
-
-		// 	}
-		// }
 };
 
 Equation from_string(string str) {
@@ -97,16 +51,27 @@ Equation from_string(string str) {
 	Equation out = Equation();
 	out.init();
 
-	vector<string> tmp;
+	vector<string> tmp = {""};
 	char ops[4] = {'+', '-', '*', '/'};
-	int word = 0;
-	
-	tmp.push_back("");
 
-	for(char var : str) {
-		if(find(begin(ops), end(ops), 'i') != end(ops)) {
-			tmp.push_back(string(1, var));
-		}
+	for(int i = 0; i < str.size(); i++) {
+		if(find(begin(ops), end(ops), 'i') != end(ops)) {tmp.push_back(string(1, str[i]));}
+		else {tmp.at(tmp.size()) += str[i];}}
+
+	char sign;
+	string snum;
+	double num;
+
+	for(string var: tmp) {
+
+		sign = var[0];
+		for(int i = 1; i < var.size(); i++) {snum += var[i];}
+		num = stod(snum);
+		out.add(sign, num);
+
+		sign = char();
+		snum = "";
+
 	}
 
 }
@@ -116,33 +81,22 @@ double solve(Equation equ) {
 	vector<Term> *cnt = equ.get_content();
 
 	switch(cnt->at(1).sign) {
-		case '+': {
-			if(cnt->size() < 3) {return (double)(cnt->at(0).num + cnt->at(1).num);}
-			else {return (double)(cnt->at(0).num + solve(equ.rtrunk()));}
-		}break;
-		case '-': {
-			if(cnt->size() < 3) {return (double)(cnt->at(0).num - cnt->at(1).num);}
-			else {return (double)(cnt->at(0).num - solve(equ.rtrunk()));}
-		}break;
-		case '*': {
-			if(cnt->size() < 3) {return (double)(cnt->at(0).num * cnt->at(1).num);}
-			else {return (double)(cnt->at(0).num * solve(equ.rtrunk()));}
-		}break;
-		case '/': {
-			if(cnt->size() < 3) {return (double)(cnt->at(0).num / cnt->at(1).num);}
-			else {return (double)(cnt->at(0).num / solve(equ.rtrunk()));}
-		}break;
-		default: {
-			throw(GenX());
-		}break;
+		case '+': {if(cnt->size() < 3) {return (double)(cnt->at(0).num + cnt->at(1).num);}
+			else {return (double)(cnt->at(0).num + solve(equ.rtrunk()));}}break;
+		case '-': {if(cnt->size() < 3) {return (double)(cnt->at(0).num - cnt->at(1).num);}
+			else {return (double)(cnt->at(0).num - solve(equ.rtrunk()));}}break;
+		case '*': {if(cnt->size() < 3) {return (double)(cnt->at(0).num * cnt->at(1).num);}
+			else {return (double)(cnt->at(0).num * solve(equ.rtrunk()));}}break;
+		case '/': {if(cnt->size() < 3) {return (double)(cnt->at(0).num / cnt->at(1).num);}
+			else {return (double)(cnt->at(0).num / solve(equ.rtrunk()));}}break;
+		default: {throw(GenX());}break;
 	}
 
 }
 
 int main() {
 
-	Equation equ;
-	// equ.from_string("-3*2");
+	Equation equ = from_string("-3*2");
 	// equ.init();
 	// equ.add('-', 3.0);
 	// equ.add('*', 2.0);
