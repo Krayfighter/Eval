@@ -92,6 +92,10 @@ double solve(Equation equ) {
 
 	vector<Term> *cnt = equ.get_content();
 
+	for(int i = 0; i < equ.size(); i++) {
+		cout << i << ": " << equ.get_content()->at(i).sign << endl;
+	}
+
 	// spaghetti code
 	switch(cnt->at(1).sign) {
 		case '+': {if(cnt->size() < 3) {return (double)(cnt->at(0).num + cnt->at(1).num);}
@@ -102,11 +106,11 @@ double solve(Equation equ) {
 			else {return (double)(cnt->at(0).num * solve(equ.rtrunk()));}}break;
 		case '/': {if(cnt->size() < 3) {return (double)(cnt->at(0).num / cnt->at(1).num);}
 			else {return (double)(cnt->at(0).num / solve(equ.rtrunk()));}}break;
-		// default: {
-		// 	cout << cnt->at(1).sign << endl;
-		// 	// throw(GenX());}
-		// }break;
-		default: break;
+		default: 
+			break;
+			// cout << cnt->at(1).sign << endl;
+			// throw(GenX());
+	}
 }
 
 int main() {
@@ -114,8 +118,8 @@ int main() {
 	Equation equ = from_string("-3*2");
 
 	// for(int i = 0; i < equ.size))
-	double out = solve(equ);
-	cout << out << endl;
+	// double out = solve(equ);
+	// cout << out << endl;
 
 	return 0;
 
