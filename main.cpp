@@ -26,7 +26,10 @@ class Equation {
 	public:
 		Equation(vector<Term> ncontent = vector<Term>()) {content = ncontent;}
 		void add(char sign, double num) {content.push_back(Term(sign, num));}
-		void init() {add('+', 0.0);}
+		void init() {
+			content = vector<Term>();
+			add('+', 0.0);
+		}
 		void print() {
 			for(int i = 0; i < content.size(); i++) {
 				cout << (char)content.at(i).sign << (int)content.at(i).num << endl;
@@ -46,18 +49,22 @@ class Equation {
 				switch(nequ[iter]) {
 					case '+': {
 						word++;
+						tmp.push_back("");
 						tmp[word] += nequ[iter];
 					}break;
 					case '-': {
 						word++;
+						tmp.push_back("");
 						tmp[word] += nequ[iter];
 					}break;
 					case '*': {
 						word++;
+						tmp.push_back("");
 						tmp[word] += nequ[iter];
 					}break;
 					case '/': {
 						word++;
+						tmp.push_back("");
 						tmp[word] += nequ[iter];
 					}break;
 					default: {
@@ -65,6 +72,21 @@ class Equation {
 					}break;
 				}
 				iter++;
+			}
+			init();
+			char _sign;
+			string _snum;
+			int _num;
+			for(string var : tmp) {
+
+				_sign = var[0];
+				for(int o = 1; o < var.size(); o++) {_snum += var[o];}
+				_num = stod(_snum);
+				add(_sign, _num);
+
+				_sign = char();
+				_snum = "";
+
 			}
 		}
 };
@@ -100,9 +122,10 @@ double solve(Equation equ) {
 int main() {
 
 	Equation equ;
-	equ.init();
-	equ.add('-', 3.0);
-	equ.add('*', 2.0);
+	equ.from_string("-3*2");
+	// equ.init();
+	// equ.add('-', 3.0);
+	// equ.add('*', 2.0);
 
 	double out = solve(equ);
 	cout << out << endl;

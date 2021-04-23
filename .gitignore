@@ -33,3 +33,6 @@
 
 # vscode debug config
 .vscode
+
+# exclude main Compiled binary
+main
