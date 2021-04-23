@@ -2,6 +2,9 @@
 #include <vector>
 #include <exception>
 #include <string>
+// for finding item in array
+#include <algorithm>
+#include <iterator>
 
 using namespace std;
 
@@ -24,7 +27,7 @@ class Equation {
 	vector<Term> content;
 	int iter = 0;
 	public:
-		Equation(vector<Term> ncontent = vector<Term>()) {content = ncontent;}
+		Equation(vector<Term> ncontent = vector<Term>()) {content = vector<Term>();}
 		void add(char sign, double num) {content.push_back(Term(sign, num));}
 		void init() {
 			content = vector<Term>();
@@ -41,55 +44,72 @@ class Equation {
 			return Equation(ncontent=ncontent);
 		}
 		vector<Term> *get_content() {return &content;};
-		void from_string(string nequ) {
-			vector<string> tmp;
-			int iter = 0;
-			int word = 0;
-			while(1) {
-				switch(nequ[iter]) {
-					case '+': {
-						word++;
-						tmp.push_back("");
-						tmp[word] += nequ[iter];
-					}break;
-					case '-': {
-						word++;
-						tmp.push_back("");
-						tmp[word] += nequ[iter];
-					}break;
-					case '*': {
-						word++;
-						tmp.push_back("");
-						tmp[word] += nequ[iter];
-					}break;
-					case '/': {
-						word++;
-						tmp.push_back("");
-						tmp[word] += nequ[iter];
-					}break;
-					default: {
-						tmp[word] += nequ[iter];
-					}break;
-				}
-				iter++;
-			}
-			init();
-			char _sign;
-			string _snum;
-			int _num;
-			for(string var : tmp) {
+		// void from_string(string nequ) {
+		// 	vector<string> tmp;
+		// 	int word = 0;
+		// 	for(int iter = 0; iter < nequ.size(); ++iter) {
+		// 		switch(nequ[iter]) {
+		// 			case '+': {
+		// 				word++;
+		// 				tmp.push_back("");
+		// 				tmp[word] += nequ[iter];
+		// 			}break;
+		// 			case '-': {
+		// 				word++;
+		// 				tmp.push_back("");
+		// 				tmp[word] += nequ[iter];
+		// 			}break;
+		// 			case '*': {
+		// 				word++;
+		// 				tmp.push_back("");
+		// 				tmp[word] += nequ[iter];
+		// 			}break;
+		// 			case '/': {
+		// 				word++;
+		// 				tmp.push_back("");
+		// 				tmp[word] += nequ[iter];
+		// 			}break;
+		// 			default: {
+		// 				tmp[word] += nequ[iter];
+		// 			}break;
+		// 		}
+		// 	}
+		// 	init();
+		// 	char _sign;
+		// 	string _snum;
+		// 	int _num;
+		// 	for(string var : tmp) {
 
-				_sign = var[0];
-				for(int o = 1; o < var.size(); o++) {_snum += var[o];}
-				_num = stod(_snum);
-				add(_sign, _num);
+		// 		_sign = var[0];
+		// 		for(int o = 1; o < var.size(); o++) {_snum += var[o];}
+		// 		_num = stod(_snum);
+		// 		add(_sign, _num);
 
-				_sign = char();
-				_snum = "";
+		// 		_sign = char();
+		// 		_snum = "";
 
-			}
-		}
+		// 	}
+		// }
 };
+
+Equation from_string(string str) {
+
+	Equation out = Equation();
+	out.init();
+
+	vector<string> tmp;
+	char ops[4] = {'+', '-', '*', '/'};
+	int word = 0;
+	
+	tmp.push_back("");
+
+	for(char var : str) {
+		if(find(begin(ops), end(ops), 'i') != end(ops)) {
+			tmp.push_back(string(1, var));
+		}
+	}
+
+}
 
 double solve(Equation equ) {
 
@@ -122,7 +142,7 @@ double solve(Equation equ) {
 int main() {
 
 	Equation equ;
-	equ.from_string("-3*2");
+	// equ.from_string("-3*2");
 	// equ.init();
 	// equ.add('-', 3.0);
 	// equ.add('*', 2.0);
