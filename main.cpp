@@ -2,11 +2,11 @@
 #include <vector>
 #include <exception>
 #include <string>
-// for finding item in array
 #include <algorithm>
 #include <iterator>
 
 using namespace std;
+
 
 struct Term {
 	char sign;
@@ -27,37 +27,47 @@ class Equation {
 	vector<Term> content;
 	int iter = 0;
 	public:
-		Equation(vector<Term> ncontent = vector<Term>()) {content = vector<Term>();}
+		Equation(vector<Term> ncontent = vector<Term>()) {content = ncontent;}
 		void add(char sign, double num) {content.push_back(Term(sign, num));}
-		void init() {
-			content = vector<Term>();
-			add('+', 0.0);
-		}
-		void print() {
-			for(int i = 0; i < content.size(); i++) {
-				cout << (char)content.at(i).sign << (int)content.at(i).num << endl;
-			}
-		}
-		Equation rtrunk() {
-			vector<Term> ncontent;
-			for(int i = 1; i < content.size(); i++) {ncontent.push_back(Term(content[i].sign, content[i].num));}
-			return Equation(ncontent=ncontent);
-		}
+		void init();
+		void print();
+		Equation rtrunk();
 		vector<Term> *get_content() {return &content;};
 		int size() {return content.size();}
 };
 
-Equation from_string(string str) {
+void Equation::init() {
+	content = vector<Term>();
+	add('+', 0.0);
+}
+void Equation::print() {
+	for(int i = 0; i < content.size(); i++) {
+		cout << (char)content.at(i).sign << (int)content.at(i).num << endl;
+	}
+}
+Equation Equation::rtrunk() {
+	vector<Term> ncontent;
+	for(int i = 1; i < content.size(); i++) {
+		ncontent.push_back(content[i]);
+	}
+	return Equation(ncontent=ncontent);
+}
 
+
+Equation from_string(string str) {
 	vector<string> tmp = {""};
 	char ops[4] = {'+', '-', '*', '/'};
 
 	for(int i = 0; i < str.size(); i++) {
 		if(find(begin(ops), end(ops), str[i]) != end(ops)) {
-			tmp.push_back(string(1, str[i]));}
-		else {
-			tmp.at(tmp.size()-1) += str[i];}}
-	
+			if(tmp.at(0) != "") {
+				tmp.push_back(string(1, str[i]));
+			}else {
+				tmp.at(0) = string(1, str[i]);
+			}
+		}else {
+			tmp.at(tmp.size()-1) += str[i];}
+		}	
 	Equation out = Equation();
 	out.init();
 
@@ -76,25 +86,16 @@ Equation from_string(string str) {
 				num = stoi(snum);
 			}catch(invalid_argument err) {}
 		}
-		// num = (snum);
 		out.add(sign, num);
-
 		sign = char();
 		snum = "";
-
 	}
-
 	return out;
-
 }
 
 double solve(Equation equ) {
 
 	vector<Term> *cnt = equ.get_content();
-
-	for(int i = 0; i < equ.size(); i++) {
-		cout << i << ": " << equ.get_content()->at(i).sign << endl;
-	}
 
 	// spaghetti code
 	switch(cnt->at(1).sign) {
@@ -107,20 +108,18 @@ double solve(Equation equ) {
 		case '/': {if(cnt->size() < 3) {return (double)(cnt->at(0).num / cnt->at(1).num);}
 			else {return (double)(cnt->at(0).num / solve(equ.rtrunk()));}}break;
 		default: 
-			break;
-			// cout << cnt->at(1).sign << endl;
-			// throw(GenX());
+			throw(GenX());
 	}
 }
 
 int main() {
 
 	Equation equ = from_string("-3*2");
+	double out = solve(equ);
+	cout << out << endl;
 
-	// for(int i = 0; i < equ.size))
-	// double out = solve(equ);
-	// cout << out << endl;
-
-	return 0;
+	// Equation equ = from_string("-3*2");
+	// equ = equ.rtrunk();
+	// return 0;
 
 }
