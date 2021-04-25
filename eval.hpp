@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <vector>
 #include <exception>
+#include <cctype>
 
 using namespace std;
 
@@ -60,6 +61,11 @@ class Eval: Equation {
 		double get_out() {return output;}
 };
 Eval::Eval(string str) {
+
+	if(isdigit(str[0])) {
+		str = '+' + str;
+	}
+
 	vector<string> tmp = {""};
 	char ops[4] = {'+', '-', '*', '/'};
 
@@ -70,6 +76,8 @@ Eval::Eval(string str) {
 			}else {
 				tmp.at(0) = string(1, str[i]);
 			}
+		// }else if(i == 0 && isdigit(str[i]) && tmp.at(0) != "") {
+		// 	tmp.push_back(string(1, '+'));
 		}else {
 			tmp.at(tmp.size()-1) += str[i];}
 		}	
