@@ -34,6 +34,6 @@
 # vscode debug config
 .vscode
 
-# exclude main Compiled binary
+# exclude compiled binaries
 main
 eval
